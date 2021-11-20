@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:practica_1_180012/src/models/serviceModel.dart';
 import 'package:practica_1_180012/src/providers/service_provider.dart';
+import 'package:practica_1_180012/src/utils/menu.dart';
 
 class HomePage extends StatelessWidget {
   final ServiceProvider serviceProvider = new ServiceProvider();
@@ -11,6 +12,7 @@ class HomePage extends StatelessWidget {
         title: Text("Servicios"),
         backgroundColor: Colors.blueAccent,
       ),
+      drawer: Menu(),
       body: _services(context),
     );
   }

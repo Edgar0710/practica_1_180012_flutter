@@ -29,7 +29,7 @@ class Service {
   });
 
   int seId;
-  int sePrecio;
+  double sePrecio;
   dynamic seEstatus;
   String seDescripcion;
   int usId;

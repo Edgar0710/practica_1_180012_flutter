@@ -20,7 +20,7 @@ class Menu extends StatelessWidget {
           ),
           Card(
             child: ListTile(
-              title: const Text('Servicios'),
+              title: const Text('Citas'),
               onTap: () {
                 // Update the state of the app.
                 // ...

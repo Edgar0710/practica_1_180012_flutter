@@ -36,7 +36,12 @@ dependencies:
   email_validator: 
   provider: ^4.3.3
   intl:
-    
+  shared_preferences: ^2.0.9  
+  flutter_polyline_points: ^0.2.6
+  flutter_slidable: ^0.5.7
+  url_launcher: 
+  datetime_picker_formfield:
+   
 dev_dependencies:
   flutter_test:
     sdk: flutter

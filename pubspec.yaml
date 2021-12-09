@@ -41,14 +41,14 @@ dependencies:
   flutter_slidable: ^0.5.7
   url_launcher: 
   datetime_picker_formfield:
-  flutter_launcher_icons: ^0.8.1
+  
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_launcher_icons: ^0.8.1
 flutter_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
   image_path: "assets/icon.png"
 # For information on the generic Dart part of this file, see the

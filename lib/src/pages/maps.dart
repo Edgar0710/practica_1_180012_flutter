@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:practica_1_180012/src/models/citasModel.dart';
 import 'package:practica_1_180012/src/utils/menu.dart';
 
 class Maps extends StatefulWidget {
+  final Cita cita;
+
+  const Maps({this.cita});
   @override
   _MapsState createState() => _MapsState();
 }
@@ -15,22 +19,12 @@ class _MapsState extends State<Maps> {
   StreamSubscription _locationSubscription;
   Location _locationTracker = Location();
   Marker marker;
-  Marker autolavado = new Marker(
-    markerId: MarkerId("Auto Lavado"),
-    position: LatLng(20.2609614, -97.9631928),
-    draggable: false,
-    zIndex: 2,
-    flat: true,
-    anchor: Offset(0.5, 0.5),
-  );
-  Circle circle;
+  Marker autolavado;
+  Cita cita;
   GoogleMapController _controller;
-
-  static final CameraPosition initialLocation = CameraPosition(
-    target: LatLng(20.2609614, -97.9631928),
-    zoom: 14.4746,
-  );
-
+  Map<PolylineId, Polyline> lines = {};
+  CameraPosition initialLocation;
+  Set<Polyline> get polylines => lines.values.toSet();
   Future<Uint8List> getMarker() async {
     ByteData byteData =
         await DefaultAssetBundle.of(context).load("assets/car_icon.png");
@@ -39,6 +33,7 @@ class _MapsState extends State<Maps> {
 
   void updateMarkerAndCircle(LocationData newLocalData, Uint8List imageData) {
     LatLng latlng = LatLng(newLocalData.latitude, newLocalData.longitude);
+    setPolylines(latlng);
     this.setState(() {
       marker = Marker(
           markerId: MarkerId("Auto"),
@@ -49,13 +44,6 @@ class _MapsState extends State<Maps> {
           flat: true,
           anchor: Offset(0.5, 0.5),
           icon: BitmapDescriptor.fromBytes(imageData));
-      circle = Circle(
-          circleId: CircleId("car"),
-          radius: newLocalData.accuracy,
-          zIndex: 1,
-          strokeColor: Colors.blue,
-          center: latlng,
-          fillColor: Colors.blue.withAlpha(70));
     });
   }
 
@@ -97,20 +85,53 @@ class _MapsState extends State<Maps> {
     super.dispose();
   }
 
+  void setPolylines(LatLng position) {
+    setState(() {
+      final PolylineId polylineId = PolylineId(cita.suNombre);
+      Polyline polyline;
+      if (lines.containsKey(polylineId)) {
+        final tmp = lines[polylineId];
+        polyline = tmp.copyWith(pointsParam: [...tmp.points, position]);
+      } else {
+        polyline = Polyline(polylineId: polylineId, points: [
+          position,
+          LatLng(cita.suLatitud, cita.suLongitud),
+        ]);
+      }
+      lines[polylineId] = polyline;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    cita = widget.cita;
+    initialLocation = CameraPosition(
+      target: LatLng(cita.suLatitud, cita.suLongitud),
+      zoom: 14.4746,
+    );
+
+    autolavado = new Marker(
+      markerId: MarkerId(cita.suNombre),
+      position: LatLng(cita.suLatitud, cita.suLongitud),
+      draggable: false,
+      zIndex: 2,
+      flat: true,
+      anchor: Offset(0.5, 0.5),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Maps"),
       ),
       drawer: Menu(),
       body: GoogleMap(
+        polylines: polylines,
         mapType: MapType.normal,
         initialCameraPosition: initialLocation,
         markers: Set.of((marker != null) ? [marker, autolavado] : []),
-        circles: Set.of((circle != null) ? [circle] : []),
         onMapCreated: (GoogleMapController controller) {
           _controller = controller;
+          getCurrentLocation();
         },
       ),
       floatingActionButton: FloatingActionButton(

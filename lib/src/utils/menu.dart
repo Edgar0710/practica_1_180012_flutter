@@ -28,16 +28,16 @@ class Menu extends StatelessWidget {
               },
             ),
           ),
-          Card(
-            child: ListTile(
-              title: const Text('Maps'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-                Navigator.pushNamed(context, 'Maps');
-              },
-            ),
-          ),
+          // Card(
+          //   child: ListTile(
+          //     title: const Text('Maps'),
+          //     onTap: () {
+          //       // Update the state of the app.
+          //       // ...
+          //       Navigator.pushNamed(context, 'Maps');
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );

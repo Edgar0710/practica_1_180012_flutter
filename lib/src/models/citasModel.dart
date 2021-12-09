@@ -19,26 +19,29 @@ class Citas {
 }
 
 class Cita {
-  Cita({
-    this.asId,
-    this.auId,
-    this.seId,
-    this.asFecha,
-    this.usId,
-    this.asPagado,
-    this.asMonto,
-    this.asAprobado,
-    this.asHora,
-    this.auModelo,
-    this.auMatricula,
-    this.auColor,
-    this.clId,
-    this.auTipo,
-    this.sePrecio,
-    this.seEstatus,
-    this.seDescripcion,
-    this.seNombre,
-  });
+  Cita(
+      {this.asId,
+      this.auId,
+      this.seId,
+      this.asFecha,
+      this.usId,
+      this.asPagado,
+      this.asMonto,
+      this.asAprobado,
+      this.asHora,
+      this.auModelo,
+      this.auMatricula,
+      this.auColor,
+      this.clId,
+      this.auTipo,
+      this.sePrecio,
+      this.seEstatus,
+      this.seDescripcion,
+      this.seNombre,
+      this.suId,
+      this.suNombre,
+      this.suLatitud,
+      this.suLongitud});
 
   int asId;
   int auId;
@@ -58,27 +61,34 @@ class Cita {
   dynamic seEstatus;
   String seDescripcion;
   String seNombre;
+  int suId;
+  String suNombre;
+  double suLatitud;
+  double suLongitud;
 
   factory Cita.fromJson(Map<String, dynamic> json) => Cita(
-        asId: json["as_id"],
-        auId: json["au_id"],
-        seId: json["se_id"],
-        asFecha: DateTime.parse(json["as_fecha"]),
-        usId: json["us_id"],
-        asPagado: json["as_pagado"] == null ? null : json["as_pagado"],
-        asMonto: json["as_monto"] == null ? null : json["as_monto"],
-        asAprobado: json["as_aprobado"],
-        asHora: json["as_hora"],
-        auModelo: json["au_modelo"],
-        auMatricula: json["au_matricula"],
-        auColor: json["au_color"],
-        clId: json["cl_id"],
-        auTipo: json["au_tipo"],
-        sePrecio: json["se_precio"],
-        seEstatus: json["se_estatus"],
-        seDescripcion: json["se_descripcion"],
-        seNombre: json["se_nombre"],
-      );
+      asId: json["as_id"],
+      auId: json["au_id"],
+      seId: json["se_id"],
+      asFecha: DateTime.parse(json["as_fecha"]),
+      usId: json["us_id"],
+      asPagado: json["as_pagado"] == null ? null : json["as_pagado"],
+      asMonto: json["as_monto"] == null ? null : json["as_monto"],
+      asAprobado: json["as_aprobado"],
+      asHora: json["as_hora"],
+      auModelo: json["au_modelo"],
+      auMatricula: json["au_matricula"],
+      auColor: json["au_color"],
+      clId: json["cl_id"],
+      auTipo: json["au_tipo"],
+      sePrecio: json["se_precio"],
+      seEstatus: json["se_estatus"],
+      seDescripcion: json["se_descripcion"],
+      seNombre: json["se_nombre"],
+      suId: json["su_id"],
+      suNombre: json["su_nombre"],
+      suLatitud: json["su_latitud"],
+      suLongitud: json["su_longitud"]);
 
   Map<String, dynamic> toJson() => {
         "as_id": asId,
@@ -99,6 +109,10 @@ class Cita {
         "se_estatus": seEstatus,
         "se_descripcion": seDescripcion,
         "se_nombre": seNombre,
+        "su_id": suId,
+        "su_nombre": suNombre,
+        "su_latitud": suLatitud,
+        "su_longitud": suLongitud,
       };
 
   bool isCancelled() {

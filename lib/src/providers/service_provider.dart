@@ -4,6 +4,7 @@ import 'package:http/retry.dart';
 import 'package:practica_1_180012/src/models/AutoModel.dart';
 import 'package:practica_1_180012/src/models/citasModel.dart';
 import 'package:practica_1_180012/src/models/serviceModel.dart';
+import 'package:practica_1_180012/src/models/sucursalModel.dart';
 
 class ServiceProvider {
   String _url = 'edkertect.xyz';
@@ -40,6 +41,19 @@ class ServiceProvider {
     return new Citas.fromJsonList(decodeData["result"]).citas;
   }
 
+  Future<List<Sucursal>> getSucursales() async {
+    final url = Uri.https(_url, '/carwash.api/api/Services/Sucursales');
+
+    final resp = await clienthttp.read(url, headers: {
+      "Content-Type": "application/json",
+    });
+
+    //decodificar
+    final decodeData = json.decode(resp);
+    //print(decodeData["result"]);
+    return new Sucursales.fromJsonList(decodeData["result"]).sucursales;
+  }
+
   Future<List<Auto>> getAutos() async {
     final url = Uri.https(
         _url, '/carwash.api/api/Services/AutosCliente', {"cliente": id});
@@ -60,6 +74,24 @@ class ServiceProvider {
       'fecha': cita.asFecha,
       'hora': cita.asHora,
     });
+    print(url);
+    final resp = await clienthttp
+        .post(url, headers: {"Content-Type": "application/json"});
+
+    print(resp.statusCode);
+    //decodificar
+
+    if (resp.statusCode != 200) return false;
+//////////////////////////////////////////////
+    final decodeData = json.decode(resp.body);
+    return true;
+  }
+
+  Future<bool> actualizaSucursalCita(int cita, int sucursal) async {
+    final url = Uri.https(
+        _url,
+        '/carwash.api/api/Services/ActualizaSucursalCita',
+        {'cita': cita.toString(), 'sucursal': sucursal.toString()});
     print(url);
     final resp = await clienthttp
         .post(url, headers: {"Content-Type": "application/json"});

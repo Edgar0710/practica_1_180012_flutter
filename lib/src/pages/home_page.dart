@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:practica_1_180012/src/models/citasModel.dart';
 import 'package:practica_1_180012/src/models/clientModel.dart';
+import 'package:practica_1_180012/src/pages/maps.dart';
+import 'package:practica_1_180012/src/pages/update_cita_sucursal.dart';
 import 'package:practica_1_180012/src/providers/service_provider.dart';
 import 'package:practica_1_180012/src/states/login_state.dart';
 import 'package:practica_1_180012/src/utils/menu.dart';
@@ -40,9 +42,15 @@ class HomePage extends StatelessWidget {
                   child: ListTile(
                     tileColor:
                         c.isCancelled() ? Colors.red[100] : Colors.green[100],
-                    leading: Text(c.formattedDay().toString() + c.asHora),
+                    trailing: Column(
+                      children: [
+                        Text(c.formattedDay().toString() + " " + c.asHora),
+                        Text("Sucursal: ${c.suNombre}"),
+                      ],
+                    ),
                     title: Center(child: Text(c.seNombre)),
                     subtitle: Center(child: Text(c.isPAgado())),
+                    leading: Text("# ${c.asId}"),
                   ),
                 ),
                 secondaryActions: [
@@ -56,7 +64,24 @@ class HomePage extends StatelessWidget {
                     caption: 'Ver mapa',
                     color: Colors.blue,
                     icon: Icons.map_sharp,
-                    onTap: () => {Navigator.pushNamed(context, "Maps")},
+                    onTap: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Maps(cita: c)))
+                    },
+                  ),
+                  IconSlideAction(
+                    caption: 'Cambiar Sucursal',
+                    color: Colors.green,
+                    icon: Icons.local_taxi_outlined,
+                    onTap: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  UpdateCitaSucursal(cita: c)))
+                    },
                   ),
                 ],
               );
@@ -71,10 +96,11 @@ class HomePage extends StatelessWidget {
   }
 
   _openCalendar(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+    await launch(url);
+    // if (await canLaunch(url)) {
+    //   await launch(url);
+    // } else {
+    //   throw 'Could not launch $url';
+    // }
   }
 }
